@@ -26,6 +26,9 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
 
 > NOTE: Windows users should set `git config core.autocrlf true` to avoid format assertions failing the build (use `--global` to set that flag globally).
 
+## Versions
+ `0.1.0`
+
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
