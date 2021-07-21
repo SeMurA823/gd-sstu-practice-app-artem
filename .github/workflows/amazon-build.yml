@@ -5,14 +5,10 @@ on:
   push:
     branches:
       - main
-    tags-ignore:
-      - 'rc/*'
 
   pull_request:
     branches:
       - main
-    tags-ignore:
-      - 'rc/*'
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: ecr-repo
@@ -95,12 +91,14 @@ jobs:
           echo "BUILD DOCKER SUCCESSFUL"
   deploy:
     name: Deploy to EC2
-    needs: publish
+    if: ${{ startsWith(needs.build.outputs.version, 'rc/') == false }}
+    needs:
+      - publish
+      - build
     runs-on: ubuntu-latest
     steps:
       - name: Create SSH key file
         env:
-          ECR_REGISTRY: ${{ needs.publish.outputs.ecr-registry }}
           IMAGE_TAG: ${{ needs.build.outputs.version }}
         run: |
           mkdir ~/.ssh
