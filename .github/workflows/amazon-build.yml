@@ -4,12 +4,12 @@ on:
 
   push:
     branches:
-      - master
+      - main
       - 'release/**'
 
   pull_request:
     branches:
-      - master
+      - main
       - 'release/**'
 
 
@@ -34,6 +34,8 @@ jobs:
       - name: SemVer workflow
         id: semver-action
         uses: kvendingoldo/semver-action@v1.7
+        with:
+          primary_branch: 'main'
 
       - name: test1
         run: |
