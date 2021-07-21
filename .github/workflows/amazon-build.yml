@@ -5,13 +5,10 @@ on:
   push:
     branches:
       - main
-      - 'release/**'
 
   pull_request:
     branches:
       - main
-      - 'release/**'
-
 
 env:
   AWS_REGION: us-east-1
@@ -60,9 +57,11 @@ jobs:
           name: artifact
           path: target/*.jar
   publish:
-    name: Docker build and AWS
+    name: Push to ECR
     needs: build
     runs-on: ubuntu-latest
+    outputs:
+      ecr-registry: ${{ steps.login-ecr.outputs.registry }}
     steps:
       - uses: actions/checkout@v2
 
@@ -91,10 +90,14 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.IMAGE_TAG }} .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.IMAGE_TAG }}
           echo "BUILD DOCKER SUCCESSFUL"
-
+  deploy:
+    name: Deploy to EC2
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
       - name: Create SSH key file
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ needs.publish.outputs.ecr-registry }}
           IMAGE_TAG: ${{ needs.build.outputs.version }}
         run: |
           mkdir ~/.ssh
