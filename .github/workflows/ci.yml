@@ -1,4 +1,4 @@
-name: Deploy to Amazon EС2
+name: CI
 
 on:
 
