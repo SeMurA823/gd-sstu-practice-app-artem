@@ -53,6 +53,7 @@ jobs:
           path: target/*.jar
   publish:
     name: Push to ECR
+    if: ${{ startsWith(needs.build.outputs.version, 'rc/') == false }}
     needs: build
     runs-on: ubuntu-latest
     outputs:
@@ -87,7 +88,6 @@ jobs:
           echo "BUILD DOCKER SUCCESSFUL"
   deploy:
     name: Deploy to EC2
-    if: ${{ startsWith(needs.build.outputs.version, 'rc/') == false }}
     needs:
       - publish
       - build
