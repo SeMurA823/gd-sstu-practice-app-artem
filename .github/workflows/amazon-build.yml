@@ -5,10 +5,12 @@ on:
   push:
     branches:
       - main
+      - 'release/**'
 
   pull_request:
     branches:
       - main
+      - 'release/**'
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: ecr-repo
@@ -51,6 +53,7 @@ jobs:
           path: target/*.jar
   publish:
     name: Push to ECR
+    if: ${{ startsWith(needs.build.outputs.version, 'rc/') == false }}
     needs: build
     runs-on: ubuntu-latest
     outputs:
@@ -85,7 +88,6 @@ jobs:
           echo "BUILD DOCKER SUCCESSFUL"
   deploy:
     name: Deploy to EC2
-    if: ${{ startsWith(needs.build.outputs.version, 'rc/') == false }}
     needs:
       - publish
       - build
