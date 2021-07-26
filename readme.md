@@ -31,6 +31,8 @@ Or you can run it from Maven directly using the Spring Boot Maven plugin. If you
  `0.2.1`
  `0.2.2`
  `0.3.0`
+ `0.3.1`
+ `0.4.0`
 ## In case you find a bug/suggested improvement for Spring Petclinic
 Our issue tracker is available here: https://github.com/spring-projects/spring-petclinic/issues
 
