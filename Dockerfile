@@ -4,8 +4,8 @@
 #RUN mvn -f /usr/src/app/pom.xml clean package
 
 FROM openjdk:11
-COPY *.jar /usr/app/app.jar
+COPY ./target/*.jar /usr/app/target/app.jar
 EXPOSE 8080
-WORKDIR /usr/app/
+WORKDIR /usr/app/target/
 RUN ls -a
 ENTRYPOINT ["java","-Dspring.profiles.active=mysql", "-jar", "app.jar"]
